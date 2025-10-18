@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
+<!DOCTYPE html><html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>커스텀GPT Chat 메인</title>
@@ -29,12 +28,10 @@
       <input type="text" id="chat-input" placeholder="메시지를 입력하세요...">
       <button id="send-btn" onclick="sendMessage()">전송</button>
     </div>
-    <button style="margin-top:14px;" onclick="resetChat()">대화 리셋</button>
-    <div style="margin-top:24px;">
-      <a href="/custom-gpt-editor" style="color:#19c37d;">커스텀GPT 관리 & 모델 업로드로 이동</a>
-    </div>
-  </div>
-  <script>
+    <button style="margin-top:14px;" onclick="resetChat()">대화 리셋</button><!-- 새 버튼 추가 -->
+<button id="go-to-editor-btn" style="margin-top:14px;">커스텀GPT 에디터로 이동</button>
+
+  </div>  <script>
     let currentGpt = '';
     let chatHistory = [];
 
@@ -79,8 +76,6 @@
       fetch('/api/custom-gpt-data?name=' + encodeURIComponent(currentGpt))
         .then(res => res.json())
         .then(gpt => {
-          // TODO: 실제 AI 연동 구현 필요
-          // 임시: system_prompt + instruction을 합쳐서 에코 응답
           let reply = `[${gpt.system_prompt||''}] ${gpt.instruction||''} (에코)`;
           appendMsg(currentGpt, reply);
           chatHistory.push({role:'assistant',content:reply});
@@ -91,6 +86,10 @@
       chatHistory = [];
       document.getElementById('chat-box').innerHTML = '';
     }
-  </script>
-</body>
+
+    // 커스텀GPT 에디터로 이동 버튼 동작
+    document.getElementById('go-to-editor-btn').addEventListener('click', () => {
+      window.location.href = 'custom_gpt_editor.html';
+    });
+  </script></body>
 </html>
